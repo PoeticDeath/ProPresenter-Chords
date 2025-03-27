@@ -313,7 +313,10 @@ while True:
                     oldlen = len(tstring)
                     if o[1] != "":
                         tstring += str(KeyChords(Key, o[1]))
-                    while font.measure(tstring[oldlen:]) < font.measure(line[o[0]] + " "):
+                    try:
+                        while font.measure(tstring[oldlen:]) < font.measure(line[o[0]] + " "):
+                            tstring += " "
+                    except IndexError:
                         tstring += " "
                 nstring += [tstring]
                 nstring += [i[1]]
