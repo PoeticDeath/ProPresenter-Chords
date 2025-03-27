@@ -305,7 +305,7 @@ while True:
             tstring = string.split("\n")
             nstring = []
             Key = Song.split(" ")[-1][:-4]
-            Chords = [i.split(",") for i in open(ChordsPath + Song, "r").read().split("\n")[2 * (slideindex["presentation_index"]["index"] - 1)]:]
+            Chords = [i.split(",") for i in open(ChordsPath + Song, "r").read().split("\n")[2 * (slideindex["presentation_index"]["index"] - 1):]]
             for i in enumerate(tstring):
                 tstring = ""
                 line = i[1].split(" ")
