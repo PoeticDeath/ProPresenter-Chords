@@ -302,11 +302,11 @@ while True:
             root.wm_attributes("-transparent", 0)
             T.config(state = "normal")
             T.delete("1.0", tk.END)
-            tstring = string.split("\n")
+            ostring = string.split("\n")
             nstring = []
             Key = Song.split(" ")[-1][:-4]
-            Chords = [i.split(",") for i in open(ChordsPath + Song, "r").read().split("\n")[2 * (slideindex["presentation_index"]["index"] - 1):]]
-            for i in enumerate(tstring):
+            Chords = [i.split(",") for i in open(ChordsPath + Song, "r").read().split("\n")[2 * slideindex["presentation_index"]["index"]:]]
+            for i in enumerate(ostring):
                 tstring = ""
                 line = i[1].split(" ")
                 for o in enumerate(Chords[i[0]]):
@@ -325,5 +325,5 @@ while True:
             T.config(state = "disabled")
             T.config(bg = "black")
             sleep(0.1)
-    except Exception:
-        pass
+    except Exception as E:
+        print(E)
