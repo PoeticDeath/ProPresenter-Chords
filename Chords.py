@@ -7,6 +7,7 @@ import tkinter.font as ft
 
 x = 3840
 y = 1150
+framerate = 1 / 60
 maxsize = size = 300
 fontf = "Futura Condensed Medium"
 
@@ -267,14 +268,15 @@ while True:
             font = ft.Font(font = (fontf, size))
             contents = json.loads(urllib.request.urlopen("http://127.0.0.1:1025/v1/presentation/active").read())
             slides = []
-            SongName = contents["presentation"]["presentation_path"].split("/")[-1][:-4]
-            ChordsPath = "/Users/harvestcommunitychurch/Documents/Chords/"
-            Songs = os.listdir(ChordsPath)
             empty = True
-            for i in Songs:
-                if i.startswith(SongName):
-                    empty = False
-                    Song = i
+            if contents["presentation"]:
+                SongName = contents["presentation"]["presentation_path"].split("/")[-1][:-4]
+                ChordsPath = "/Users/harvestcommunitychurch/Documents/Chords/"
+                Songs = os.listdir(ChordsPath)
+                for i in Songs:
+                    if i.startswith(SongName):
+                        empty = False
+                        Song = i
             if empty:
                 laststring = string = ""
                 root.wm_attributes("-transparent", 0)
@@ -284,7 +286,7 @@ while True:
                 T.config(bg = "systemTransparent")
                 root.wm_attributes("-transparent", 1)
                 root.update()
-                sleep(0.1)
+                sleep(framerate)
                 continue
             for i in contents["presentation"]["groups"]:
                 for p in i["slides"]:
@@ -293,7 +295,7 @@ while True:
             string = slides[slideindex["presentation_index"]["index"]].replace("\n", " \n")
             if string == laststring:
                 root.update()
-                sleep(0.1)
+                sleep(framerate)
                 continue
             laststring = string
             while font.measure(sorted(string.split("\n"), key=len)[-1]) > x:
@@ -317,7 +319,7 @@ while True:
                         while font.measure(tstring[oldlen:]) < font.measure(line[o[0]] + " "):
                             tstring += " "
                     except IndexError:
-                        tstring += " "
+                         tstring += " "
                 nstring += [tstring]
                 nstring += [i[1]]
             while y / font.metrics("linespace") < len(nstring):
@@ -327,6 +329,15 @@ while True:
             T.insert(tk.END, "\n".join(nstring), "Just")
             T.config(state = "disabled")
             T.config(bg = "black")
-            sleep(0.1)
+            sleep(framerate)
     except Exception as E:
         print(E)
+        laststring = string = ""
+        root.wm_attributes("-transparent", 0)
+        T.config(state = "normal")
+        T.delete("1.0", tk.END)
+        T.config(state = "disabled")
+        T.config(bg = "systemTransparent")
+        root.wm_attributes("-transparent", 1)
+        root.update()
+        sleep(framerate)
