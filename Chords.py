@@ -11,18 +11,20 @@ framerate = 1 / 60
 maxsize = size = 300
 fontf = "Futura Condensed Medium"
 
+root = tk.Tk()
 if os.name == "nt":
-    root = tk.Tk()
-    root.attributes("-transparentcolor", "gray")
+    trans = "gray"
+    root.attributes("-transparentcolor", trans)
 else:
     root.config(bg = "systemTransparent")
     root.wm_attributes("-transparent", 1)
+    trans = "systemTransparent"
 root.overrideredirect(1)
 
 font = ft.Font(font = (fontf, size))
 
 T = tk.Text(root)
-T.config(bg = "gray", fg = "white", font = (fontf, size), borderwidth = 0, highlightthickness = 0, wrap = "none", state = "disabled")
+T.config(bg = trans, fg = "white", font = (fontf, size), borderwidth = 0, highlightthickness = 0, wrap = "none", state = "disabled")
 T.pack()
 T.place(x = 0, y = 0, width = x, height = y)
 T.tag_config("Just", justify = "left")
@@ -307,7 +309,7 @@ while True:
                 T.config(state = "normal")
                 T.delete("1.0", tk.END)
                 T.config(state = "disabled")
-                T.config(bg = "gray")
+                T.config(bg = trans)
                 if os.name != "nt":
                     root.wm_attributes("-transparent", 1)
                 root.update()
@@ -364,7 +366,7 @@ while True:
         T.config(state = "normal")
         T.delete("1.0", tk.END)
         T.config(state = "disabled")
-        T.config(bg = "gray")
+        T.config(bg = trans)
         if os.name != "nt":
             root.wm_attributes("-transparent", 1)
         root.update()
