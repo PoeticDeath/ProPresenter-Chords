@@ -25,7 +25,7 @@ T.pack()
 T.place(x = 0, y = 0, width = x, height = y)
 T.tag_config("Just", justify = "left")
 
-root.geometry(f"{x}x{y}+1920+0")
+root.geometry(f"{x}x{y}+4096+0")
 
 class KeyChords:
     def __init__(self, Key, Chord):
@@ -81,6 +81,22 @@ class KeyChords:
                         return "B" + chr(254) + "m"
                     case 6:
                         return "C" + chr(176)
+            case "DS":
+                match self.Chord:
+                    case 0:
+                        return "D"
+                    case 1:
+                        return "E"
+                    case 2:
+                        return "F#m"
+                    case 3:
+                        return "G"
+                    case 4:
+                        return "A"
+                    case 5:
+                        return "Bm"
+                    case 6:
+                        return "C#" + chr(176)
             case "D":
                 match self.Chord:
                     case 0:
@@ -271,7 +287,7 @@ while True:
             empty = True
             if contents["presentation"]:
                 SongName = contents["presentation"]["presentation_path"].split("/")[-1][:-4]
-                ChordsPath = "/Users/harvestcommunitychurch/Documents/Chords/"
+                ChordsPath = "/Users/harvestcommunitychurch/OneDrive - Harvest Community Church of Corry/Harvest Community Church ProPresenter/Chords/"
                 Songs = os.listdir(ChordsPath)
                 for i in Songs:
                     if i.startswith(SongName):
