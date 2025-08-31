@@ -11,16 +11,18 @@ framerate = 1 / 60
 maxsize = size = 300
 fontf = "Futura Condensed Medium"
 
-root = tk.Tk()
-root.config(bg = "systemTransparent")
-root.wm_attributes("-transparent", 1)
+if os.name == "nt":
+    root = tk.Tk()
+    root.attributes("-transparentcolor", "gray")
+else:
+    root.config(bg = "systemTransparent")
+    root.wm_attributes("-transparent", 1)
 root.overrideredirect(1)
-root.wm_attributes("-topmost", 1)
 
 font = ft.Font(font = (fontf, size))
 
 T = tk.Text(root)
-T.config(bg = "systemTransparent", fg = "white", font = (fontf, size), borderwidth = 0, highlightthickness = 0, wrap = "none", state = "disabled")
+T.config(bg = "gray", fg = "white", font = (fontf, size), borderwidth = 0, highlightthickness = 0, wrap = "none", state = "disabled")
 T.pack()
 T.place(x = 0, y = 0, width = x, height = y)
 T.tag_config("Just", justify = "left")
@@ -280,14 +282,19 @@ while True:
     try:
         laststring = ""
         while True:
+            root.wm_attributes("-topmost", 1)
             size = maxsize
             font = ft.Font(font = (fontf, size))
             contents = json.loads(urllib.request.urlopen("http://127.0.0.1:1025/v1/presentation/active").read())
             slides = []
             empty = True
             if contents["presentation"]:
-                SongName = contents["presentation"]["presentation_path"].split("/")[-1][:-4]
-                ChordsPath = "/Users/harvestcommunitychurch/OneDrive - Harvest Community Church of Corry/Harvest Community Church ProPresenter/Chords/"
+                if os.name == "nt":
+                    SongName = contents["presentation"]["presentation_path"].split("\\")[-1][:-4]
+                    ChordsPath = "C:\\Users\\HCC\\OneDrive - Harvest Community Church of Corry\\Harvest Community Church ProPresenter\\Chords\\"
+                else:
+                    SongName = contents["presentation"]["presentation_path"].split("/")[-1][:-4]
+                    ChordsPath = "/Users/harvestcommunitychurch/OneDrive - Harvest Community Church of Corry/Harvest Community Church ProPresenter/Chords/"
                 Songs = os.listdir(ChordsPath)
                 for i in Songs:
                     if i.startswith(SongName):
@@ -295,12 +302,14 @@ while True:
                         Song = i
             if empty:
                 laststring = string = ""
-                root.wm_attributes("-transparent", 0)
+                if os.name != "nt":
+                    root.wm_attributes("-transparent", 0)
                 T.config(state = "normal")
                 T.delete("1.0", tk.END)
                 T.config(state = "disabled")
-                T.config(bg = "systemTransparent")
-                root.wm_attributes("-transparent", 1)
+                T.config(bg = "gray")
+                if os.name != "nt":
+                    root.wm_attributes("-transparent", 1)
                 root.update()
                 sleep(framerate)
                 continue
@@ -317,7 +326,8 @@ while True:
             while font.measure(sorted(string.split("\n"), key=len)[-1]) > x:
                 size -= 1
                 font = ft.Font(font = (fontf, size))
-            root.wm_attributes("-transparent", 0)
+            if os.name != "nt":
+                root.wm_attributes("-transparent", 0)
             T.config(state = "normal")
             T.delete("1.0", tk.END)
             ostring = string.split("\n")
@@ -349,11 +359,13 @@ while True:
     except Exception as E:
         print(E)
         laststring = string = ""
-        root.wm_attributes("-transparent", 0)
+        if os.name != "nt":
+            root.wm_attributes("-transparent", 0)
         T.config(state = "normal")
         T.delete("1.0", tk.END)
         T.config(state = "disabled")
-        T.config(bg = "systemTransparent")
-        root.wm_attributes("-transparent", 1)
+        T.config(bg = "gray")
+        if os.name != "nt":
+            root.wm_attributes("-transparent", 1)
         root.update()
         sleep(framerate)
